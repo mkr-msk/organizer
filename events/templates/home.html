@@ -4,8 +4,16 @@
     </head>
     <body>
         <h1>События</h1>
-        <input id="id_new_item" placeholder="Новое событие" />
+
+        <form method="POST">
+            <input name="item_text" id="id_new_item" placeholder="Новое событие" />
+            {% csrf_token %}
+        </form>
+        
         <table id="id_events_table">
+            <tr>
+                <td>1: {{ new_item_text }}</td>
+            </tr>
         </table>
     </body>
 </html>
