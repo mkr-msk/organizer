@@ -13,6 +13,12 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def check_for_row_in_list_table(self, row_text):
+        tables = self.browser.find_elements(by='tag name', value='table')
+        table = [t for t in tables if t.get_attribute('id') == 'id_events_table'][0]
+        rows = table.find_elements(by='tag name', value='tr')
+        self.assertIn(row_text, [row.text for row in rows])
+
     def test_can_start_event_list_and_retrieve_it_later(self):
         self.browser.get('http://localhost:8000')
 
@@ -35,11 +41,7 @@ class NewVisitorTest(unittest.TestCase):
         # "1: Тестовое событие 1"
         inputbox.send_keys(Keys.ENTER)
         time.sleep(2)
-
-        tables = self.browser.find_elements(by='tag name', value='table')
-        table = [t for t in tables if t.get_attribute('id') == 'id_events_table'][0]
-        rows = table.find_elements(by='tag name', value='tr')
-        self.assertIn('1: Тестовое событие 1', [row.text for row in rows])
+        self.check_for_row_in_list_table('1: Тестовое событие 1')
         
         # Набираем в текстовом поле "Тестовое событие 2"
         # Предлагается ввести событие
@@ -50,12 +52,8 @@ class NewVisitorTest(unittest.TestCase):
         # "2: Тестовое событие 2"
         inputbox.send_keys(Keys.ENTER)
         time.sleep(2)
-
-        tables = self.browser.find_elements(by='tag name', value='table')
-        table = [t for t in tables if t.get_attribute('id') == 'id_events_table'][0]
-        rows = table.find_elements(by='tag name', value='tr')
-        self.assertIn('1: Тестовое событие 1', [row.text for row in rows])
-        self.assertIn('2: Тестовое событие 2', [row.text for row in rows])
+        self.check_for_row_in_list_table('1: Тестовое событие 1')
+        self.check_for_row_in_list_table('2: Тестовое событие 2')
 
         # Выводится URL с сохраненными событиями
         self.fail('Закончить тест!')
@@ -65,4 +63,3 @@ class NewVisitorTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
-    
