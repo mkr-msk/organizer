@@ -17,9 +17,9 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.get('http://localhost:8000')
 
         # Пользователь видит заголовок и шапку сайта
-        self.assertIn('Organizer', self.browser.title)
+        self.assertIn('Органайзер', self.browser.title)
         header_text = self.browser.find_element(by='tag name', value='h1')
-        self.assertIn('Organizer', header_text)
+        self.assertIn('События', header_text.text)
 
         # Предлагается ввести событие
         inputbox = self.browser.find_element(value='id_new_item')
@@ -37,7 +37,8 @@ class NewVisitorTest(unittest.TestCase):
         table = self.browser.find_element(value='id_events_table')
         rows = table.find_elements(by='tag name', value='tr')
         self.assertTrue(
-            any(row.text == '1: Тестовое событие 1' for row in rows)
+            any(row.text == '1: Тестовое событие 1' for row in rows),
+            'Новое событие не появилось в таблице'
         )
         # Набираем в текстовом поле "Тестовое событие 2"
         self.fail('Закончить тест!')
