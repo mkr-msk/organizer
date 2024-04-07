@@ -17,20 +17,11 @@ class HomePageTest(TestCase):
     def test_redirects_after_POST(self):
         response = self.client.post('/', data={'item_text': 'Новое событие'})
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/')
+        self.assertEqual(response['location'], '/events/list1/')
 
     def test_only_saves_items_when_necessary(self):
         self.client.get('/')
         self.assertEqual(Item.objects.count(), 0)
-
-    def test_displays_all_event_items(self):
-        Item.objects.create(text='itemey 1')
-        Item.objects.create(text='itemey 2')
-
-        response = self.client.get('/')
-
-        self.assertIn('itemey 1', response.content.decode())
-        self.assertIn('itemey 2', response.content.decode())
 
 
 class ItemModelTest(TestCase):
@@ -51,3 +42,19 @@ class ItemModelTest(TestCase):
         second_saved_item = saved_items[1]
         self.assertEqual(first_saved_item.text, 'Первый элемент списка')
         self.assertEqual(second_saved_item.text, 'Второй элемент списка')
+
+
+class EventsViewTest(TestCase):
+
+    def test_uses_list_template(self):
+        response = self.client.get('/events/list1/')
+        self.assertTemplateUsed(response, 'list.html')
+    
+    def test_displays_all_event_items(self):
+        Item.objects.create(text='itemey 1')
+        Item.objects.create(text='itemey 2')
+
+        response = self.client.get('/events/list1/')
+
+        self.assertContains(response, 'itemey 1')
+        self.assertContains(response, 'itemey 2')
