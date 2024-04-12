@@ -36,7 +36,7 @@ class NewVisitorTest(LiveServerTestCase):
         # Пользователь видит заголовок и шапку сайта
         self.assertIn('Органайзер', self.browser.title)
         header_text = self.browser.find_element(by='tag name', value='h1')
-        self.assertIn('События', header_text.text)
+        self.assertIn('Начать новый список', header_text.text)
 
         # Предлагается ввести событие
         input_boxes = self.browser.find_elements(by='tag name', value='input')
@@ -51,6 +51,7 @@ class NewVisitorTest(LiveServerTestCase):
         # После нажатия Enter, страница обновляется и содержит 
         # "1: Тестовое событие 1"
         inputbox.send_keys(Keys.ENTER)
+        time.sleep(0.5)
         self.wait_for_row_in_list_table('1: Тестовое событие 1')
         
         # Набираем в текстовом поле "Тестовое событие 2"
@@ -61,6 +62,7 @@ class NewVisitorTest(LiveServerTestCase):
         # После нажатия Enter, страница обновляется и содержит 
         # "2: Тестовое событие 2"
         inputbox.send_keys(Keys.ENTER)
+        time.sleep(0.5)
         self.wait_for_row_in_list_table('1: Тестовое событие 1')
         self.wait_for_row_in_list_table('2: Тестовое событие 2')
 
@@ -70,6 +72,7 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox = [ib for ib in input_boxes if ib.get_attribute('id') == 'id_new_item'][0]
         inputbox.send_keys('Тестовое событие 1')
         inputbox.send_keys(Keys.ENTER)
+        time.sleep(0.5)
         self.wait_for_row_in_list_table('1: Тестовое событие 1')
 
         user1_list_url = self.browser.current_url
@@ -87,6 +90,7 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox = [ib for ib in input_boxes if ib.get_attribute('id') == 'id_new_item'][0]
         inputbox.send_keys('Тестовое событие 3')
         inputbox.send_keys(Keys.ENTER)
+        time.sleep(0.5)
         self.wait_for_row_in_list_table('1: Тестовое событие 3')
 
         user2_list_url = self.browser.current_url

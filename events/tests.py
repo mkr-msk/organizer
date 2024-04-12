@@ -7,21 +7,6 @@ class HomePageTest(TestCase):
     def test_uses_home_template(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home.html')
-    
-    def test_can_save_a_POST_request(self):
-        response = self.client.post('/', data={'item_text': 'Новое событие'})
-        self.assertEqual(Item.objects.count(), 1)
-        new_item = Item.objects.first()
-        self.assertEqual(new_item.text, 'Новое событие')
-
-    def test_redirects_after_POST(self):
-        response = self.client.post('/', data={'item_text': 'Новое событие'})
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/events/list1/')
-
-    def test_only_saves_items_when_necessary(self):
-        self.client.get('/')
-        self.assertEqual(Item.objects.count(), 0)
 
 
 class ItemModelTest(TestCase):
@@ -58,3 +43,16 @@ class EventsViewTest(TestCase):
 
         self.assertContains(response, 'itemey 1')
         self.assertContains(response, 'itemey 2')
+
+
+class NewListTest(TestCase):
+
+    def test_can_save_a_POST_request(self):
+        response = self.client.post('/events/new', data={'item_text': 'Новое событие'})
+        self.assertEqual(Item.objects.count(), 1)
+        new_item = Item.objects.first()
+        self.assertEqual(new_item.text, 'Новое событие')
+
+    def test_redirects_after_POST(self):
+        response = self.client.post('/events/new', data={'item_text': 'Новое событие'})
+        self.assertRedirects(response, '/events/list1/')
