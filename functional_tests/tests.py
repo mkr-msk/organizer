@@ -8,7 +8,6 @@ import time
 MAX_WAIT = 10
 
 class NewVisitorTest(LiveServerTestCase):
-    'Тест нового посетителя'
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -100,3 +99,28 @@ class NewVisitorTest(LiveServerTestCase):
         page_text = self.browser.find_element(by='tag name', value='body').text
         self.assertNotIn('Тестовое событие 1', page_text)
         self.assertIn('Тестовое событие 3', page_text)
+
+    def test_layout_and_styling(self):
+
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024, 768)
+
+        input_boxes = self.browser.find_elements(by='tag name', value='input')
+        inputbox = [ib for ib in input_boxes if ib.get_attribute('id') == 'id_new_item'][0]
+        self.assertAlmostEqual(
+            inputbox.location['x'] + inputbox.size['width'] / 2,
+            512,
+            delta=10
+        )
+
+        inputbox.send_keys('testing')
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(0.5)
+        self.wait_for_row_in_list_table('1: testing')
+        input_boxes = self.browser.find_elements(by='tag name', value='input')
+        inputbox = [ib for ib in input_boxes if ib.get_attribute('id') == 'id_new_item'][0]
+        self.assertAlmostEqual(
+            inputbox.location['x'] + inputbox.size['width'] / 2,
+            512,
+            delta=10
+        )
