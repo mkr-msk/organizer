@@ -1,19 +1,13 @@
-<html>
-    <head>
-        <title>Органайзер</title>
-    </head>
-    <body>
-        <h1>События</h1>
+{% extends "base.html" %}
 
-        <form method="POST" action="/events/{{ list.id }}/add_item">
-            <input name="item_text" id="id_new_item" placeholder="Новое событие" />
-            {% csrf_token %}
-        </form>
-        
-        <table id="id_events_table">
-            {% for item in list.item_set.all %}
-                <tr><td>{{ forloop.counter }}: {{ item.text }}</td></tr>
-            {% endfor %}
-        </table>
-    </body>
-</html>
+{% block header_text %}Список событий{% endblock header_text %}
+
+{% block form_action %}/events/{{ list.id }}/add_item{% endblock form_action %}
+
+{% block table %}       
+    <table id="id_events_table">
+        {% for item in list.item_set.all %}
+            <tr><td>{{ forloop.counter }}: {{ item.text }}</td></tr>
+        {% endfor %}
+    </table>
+{% endblock table %} 
