@@ -4,10 +4,12 @@
 
 {% block form_action %}/events/{{ list.id }}/add_item{% endblock form_action %}
 
-{% block table %}       
-    <table id="id_events_table">
+{% block table %} 
+
+    <table id="id_events_table" class="table">
         {% for item in list.item_set.all %}
             <tr><td>{{ forloop.counter }}: {{ item.text }}</td></tr>
         {% endfor %}
     </table>
+
 {% endblock table %} 
