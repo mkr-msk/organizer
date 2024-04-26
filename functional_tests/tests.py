@@ -30,7 +30,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
             except (AssertionError, WebDriverException) as e:
                 if time.time() - start_time > MAX_WAIT:
                     raise e
-                time.sleep(0.5)
+                time.sleep(1)
         
     def test_can_start_a_list_for_one_user(self):
         self.browser.get(self.live_server_url)
@@ -53,7 +53,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # После нажатия Enter, страница обновляется и содержит 
         # "1: Тестовое событие 1"
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(0.5)
+        time.sleep(1)
         self.wait_for_row_in_list_table('1: Тестовое событие 1')
         
         # Набираем в текстовом поле "Тестовое событие 2"
@@ -64,7 +64,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # После нажатия Enter, страница обновляется и содержит 
         # "2: Тестовое событие 2"
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(0.5)
+        time.sleep(1)
         self.wait_for_row_in_list_table('1: Тестовое событие 1')
         self.wait_for_row_in_list_table('2: Тестовое событие 2')
 
@@ -74,7 +74,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         inputbox = [ib for ib in input_boxes if ib.get_attribute('id') == 'id_new_item'][0]
         inputbox.send_keys('Тестовое событие 1')
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(0.5)
+        time.sleep(1)
         self.wait_for_row_in_list_table('1: Тестовое событие 1')
 
         user1_list_url = self.browser.current_url
@@ -92,7 +92,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         inputbox = [ib for ib in input_boxes if ib.get_attribute('id') == 'id_new_item'][0]
         inputbox.send_keys('Тестовое событие 3')
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(0.5)
+        time.sleep(1)
         self.wait_for_row_in_list_table('1: Тестовое событие 3')
 
         user2_list_url = self.browser.current_url
@@ -118,7 +118,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         inputbox.send_keys('testing')
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(0.5)
+        time.sleep(1)
         self.wait_for_row_in_list_table('1: testing')
         input_boxes = self.browser.find_elements(by='tag name', value='input')
         inputbox = [ib for ib in input_boxes if ib.get_attribute('id') == 'id_new_item'][0]
